@@ -2,6 +2,10 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+require('dotenv').config();
+
+const settingsApi = require('./api/settings');
+const sessionApi = require('./api/session');
 
 const PORT = Number(process.env.PORT) || 3000;
 const HOST = '0.0.0.0';
@@ -39,6 +43,16 @@ const server = http.createServer((req, res) => {
   // Parse URL pathname (remove query string & hash)
   const safeUrl = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
   let pathname = decodeURIComponent(safeUrl.pathname);
+
+  if (pathname === '/api/settings') {
+    settingsApi(req, res);
+    return;
+  }
+
+  if (pathname === '/api/session') {
+    sessionApi(req, res);
+    return;
+  }
 
   // Default routes
   if (pathname === '/' || pathname === '/index.html') {

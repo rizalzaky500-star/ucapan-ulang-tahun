@@ -16,6 +16,9 @@
         &larr; Lihat Tampilan
       </a>
     </div>
+    <button id="logoutButton" type="button" class="hidden mb-4 text-sm text-purple-700 hover:text-purple-900 underline">
+      Keluar dari admin
+    </button>
 
     <!-- Alert Notifikasi -->
     <p id="alert" class="hidden mb-4 p-3 bg-green-100 border border-green-400 text-green-700 text-sm rounded-lg" role="status" aria-live="polite">
@@ -23,11 +26,21 @@
     </p>
     <p id="adminStatus" class="hidden mb-4 p-3 bg-red-100 border border-red-400 text-red-700 text-sm rounded-lg" role="alert"></p>
 
+    <form id="loginForm" class="space-y-4">
+      <div>
+        <label for="adminPassword" class="block text-sm font-medium text-gray-700 mb-1">Kata Sandi Admin</label>
+        <input type="password" id="adminPassword" required autocomplete="current-password" class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-purple-500 focus:outline-none text-gray-800">
+      </div>
+      <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2.5 rounded-xl shadow-md transition">
+        Masuk
+      </button>
+    </form>
+
     <!-- Form Pengaturan -->
-    <form id="adminForm" class="space-y-4">
+    <form id="adminForm" class="hidden space-y-4">
       <div>
         <label for="inputName" class="block text-sm font-medium text-gray-700 mb-1">Nama Yang Ulang Tahun</label>
-        <input type="text" id="inputName" required class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-purple-500 focus:outline-none text-gray-800">
+        <input type="text" id="inputName" maxlength="100" required class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-purple-500 focus:outline-none text-gray-800">
       </div>
 
       <div>
@@ -48,6 +61,9 @@
     const nameInput = document.getElementById('inputName');
     const ageInput = document.getElementById('inputAge');
     const adminForm = document.getElementById('adminForm');
+    const loginForm = document.getElementById('loginForm');
+    const adminPassword = document.getElementById('adminPassword');
+    const logoutButton = document.getElementById('logoutButton');
     const alertBox = document.getElementById('alert');
     const adminStatus = document.getElementById('adminStatus');
 
@@ -61,14 +77,75 @@
       );
     }
 
-    try {
-      nameInput.value = localStorage.getItem('birthdayName') || 'Budi Utomo';
-      ageInput.value = localStorage.getItem('birthdayAge') || '20';
-    } catch (error) {
-      showStatus(adminStatus, `Penyimpanan browser tidak tersedia: ${error.message}`, true);
+    async function loadSettings() {
+      try {
+        const sessionResponse = await fetch('/api/session');
+        const session = await sessionResponse.json();
+        if (!sessionResponse.ok) {
+          throw new Error(session.error || 'Status admin tidak dapat diperiksa.');
+        }
+        if (!session.authenticated) {
+          loginForm.classList.remove('hidden');
+          adminForm.classList.add('hidden');
+          logoutButton.classList.add('hidden');
+          return;
+        }
+
+        loginForm.classList.add('hidden');
+        adminForm.classList.remove('hidden');
+        logoutButton.classList.remove('hidden');
+        const response = await fetch('/api/settings');
+        const settings = await response.json();
+        if (!response.ok) {
+          throw new Error(settings.error || 'Pengaturan tidak dapat dimuat.');
+        }
+        nameInput.value = settings.name;
+        ageInput.value = settings.age;
+      } catch (error) {
+        showStatus(adminStatus, `Gagal memuat pengaturan: ${error.message}`, true);
+      }
     }
 
-    adminForm.addEventListener('submit', (event) => {
+    loadSettings();
+
+    loginForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      adminStatus.classList.add('hidden');
+
+      try {
+        const response = await fetch('/api/session', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password: adminPassword.value }),
+        });
+        const result = await response.json();
+        if (!response.ok) {
+          throw new Error(result.error || 'Tidak dapat masuk sebagai admin.');
+        }
+        adminPassword.value = '';
+        await loadSettings();
+      } catch (error) {
+        showStatus(adminStatus, error.message, true);
+      }
+    });
+
+    logoutButton.addEventListener('click', async () => {
+      try {
+        const response = await fetch('/api/session', { method: 'DELETE' });
+        const result = await response.json();
+        if (!response.ok) {
+          throw new Error(result.error || 'Tidak dapat keluar dari admin.');
+        }
+        adminForm.classList.add('hidden');
+        logoutButton.classList.add('hidden');
+        loginForm.classList.remove('hidden');
+        showStatus(alertBox, 'Anda telah keluar dari admin.', false);
+      } catch (error) {
+        showStatus(adminStatus, error.message, true);
+      }
+    });
+
+    adminForm.addEventListener('submit', async (event) => {
       event.preventDefault();
       adminStatus.classList.add('hidden');
 
@@ -80,8 +157,15 @@
       }
 
       try {
-        localStorage.setItem('birthdayName', name);
-        localStorage.setItem('birthdayAge', String(age));
+        const response = await fetch('/api/settings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, age }),
+        });
+        const result = await response.json();
+        if (!response.ok) {
+          throw new Error(result.error || 'Pengaturan tidak dapat disimpan.');
+        }
         showStatus(alertBox, 'Data berhasil diperbarui!', false);
       } catch (error) {
         showStatus(adminStatus, `Tidak dapat menyimpan pengaturan: ${error.message}`, true);

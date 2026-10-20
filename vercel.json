@@ -12,6 +12,14 @@
     {
       "src": "laguwae.mpeg",
       "use": "@vercel/static"
+    },
+    {
+      "src": "api/settings.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "api/session.js",
+      "use": "@vercel/node"
     }
   ],
   "rewrites": [

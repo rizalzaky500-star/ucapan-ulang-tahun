@@ -700,6 +700,7 @@
     <h1 id="displayName" class="birthday-title text-4xl md:text-5xl font-extrabold mb-2">
       Loading...
     </h1>
+    <p id="settingsStatus" class="hidden mb-2 text-sm text-red-700" role="alert"></p>
 
     <p class="love-signoff text-lg font-semibold mb-3">Selamat ulang tahun, sayang 💌</p>
     
@@ -735,13 +736,25 @@
   <audio id="birthdaySong" src="/laguwae.mpeg" loop preload="none"></audio>
 
   <script>
-    // Membaca data dari localStorage atau menggunakan nilai default
-    function loadData() {
-      const name = localStorage.getItem('birthdayName') || 'Budi Utomo';
-      const age = localStorage.getItem('birthdayAge') || '20';
+    async function loadData() {
+      const displayName = document.getElementById('displayName');
+      const displayAge = document.getElementById('displayAge');
+      const settingsStatus = document.getElementById('settingsStatus');
+      displayName.innerText = 'Budi Utomo';
+      displayAge.innerText = '20';
 
-      document.getElementById('displayName').innerText = name;
-      document.getElementById('displayAge').innerText = age;
+      try {
+        const response = await fetch('/api/settings');
+        const settings = await response.json();
+        if (!response.ok) {
+          throw new Error(settings.error || 'Pengaturan tidak dapat dimuat.');
+        }
+        displayName.innerText = settings.name;
+        displayAge.innerText = settings.age;
+      } catch (error) {
+        settingsStatus.textContent = `Pengaturan database tidak dapat dimuat: ${error.message}`;
+        settingsStatus.classList.remove('hidden');
+      }
     }
 
     function releaseBalloons() {
