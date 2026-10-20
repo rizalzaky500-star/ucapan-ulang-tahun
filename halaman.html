@@ -18,13 +18,25 @@
 
     * { box-sizing: border-box; }
 
-    body {
+    body.min-h-screen {
       isolation: isolate;
       overflow-x: hidden;
+      min-height: 100vh;
+      min-height: 100svh;
       background:
         radial-gradient(ellipse at 50% 110%, rgb(100 54 176 / 78%), transparent 56%),
         radial-gradient(ellipse at 10% 10%, rgb(77 61 160 / 60%), transparent 44%),
         linear-gradient(150deg, #10102e 0%, #251044 48%, #451459 100%);
+    }
+
+    .birthday-title {
+      overflow-wrap: anywhere;
+      font-size: clamp(2rem, 9vw, 3rem);
+      line-height: 1.12;
+    }
+
+    .love-message {
+      text-wrap: pretty;
     }
 
     .sky-glow {
@@ -260,6 +272,7 @@
       position: relative;
       isolation: isolate;
       overflow: hidden;
+      min-height: 48px;
       box-shadow: 0 8px 28px rgb(190 65 202 / 35%);
       transition: transform 180ms ease, box-shadow 180ms ease;
     }
@@ -296,14 +309,14 @@
     }
 
     @keyframes balloon-flight {
-      0% { transform: translate3d(0, 0, 0) rotate(-9deg); }
-      50% { transform: translate3d(35px, -58vh, 0) rotate(9deg); }
-      100% { transform: translate3d(-18px, -120vh, 0) rotate(-7deg); }
+      0% { transform: translate3d(0, 0, 0) rotate(-9deg) scale(var(--balloon-scale, 1)); }
+      50% { transform: translate3d(35px, -58vh, 0) rotate(9deg) scale(var(--balloon-scale, 1)); }
+      100% { transform: translate3d(-18px, -120vh, 0) rotate(-7deg) scale(var(--balloon-scale, 1)); }
     }
 
     @keyframes garden-balloon-bob {
-      0%, 100% { transform: translateY(0) rotate(-4deg); }
-      50% { transform: translateY(-9px) rotate(4deg); }
+      0%, 100% { transform: translateY(0) rotate(-4deg) scale(var(--balloon-scale, 1)); }
+      50% { transform: translateY(-9px) rotate(4deg) scale(var(--balloon-scale, 1)); }
     }
 
     @keyframes card-arrive {
@@ -350,6 +363,89 @@
     @keyframes button-shine {
       0%, 60%, 100% { transform: translateX(-130%); }
       35% { transform: translateX(130%); }
+    }
+
+    @media (max-width: 640px) {
+      body.min-h-screen.p-4.items-center {
+        align-items: flex-start;
+        padding: max(1rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-right))
+          max(1.5rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left));
+      }
+
+      .birthday-card {
+        width: min(100%, 32rem);
+        margin: auto;
+        padding: clamp(1.5rem, 7vw, 2rem);
+        border-radius: 1.5rem;
+      }
+
+      .love-message {
+        font-size: clamp(.9rem, 3.8vw, 1rem);
+        line-height: 1.75;
+      }
+
+      .bottom-balloon-garden {
+        height: 118px;
+      }
+
+      .garden-balloon:nth-child(even) {
+        display: none;
+      }
+
+      .garden-balloon {
+        --balloon-scale: .82;
+      }
+
+      .party-balloon {
+        --balloon-scale: .8;
+      }
+
+      .sky-glow {
+        width: 24rem;
+        height: 24rem;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .birthday-card {
+        padding: 1.35rem 1rem;
+      }
+
+      .birthday-card h2 {
+        max-width: 90%;
+        margin-right: auto;
+        margin-left: auto;
+        font-size: .72rem;
+        letter-spacing: .12em;
+      }
+
+      .love-caption {
+        right: calc(100% - 3px);
+        font-size: 10px;
+      }
+
+      .garden-balloon:nth-child(3n) {
+        display: none;
+      }
+    }
+
+    @media (max-height: 520px) and (orientation: landscape) {
+      body.min-h-screen.p-4.items-center {
+        align-items: flex-start;
+      }
+
+      .birthday-card {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .bottom-balloon-garden {
+        height: 92px;
+      }
+
+      .garden-balloon {
+        --balloon-scale: .7;
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
