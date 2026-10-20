@@ -9,6 +9,7 @@ const sessionApi = require('./api/session');
 
 const PORT = Number(process.env.PORT) || 3000;
 const HOST = '0.0.0.0';
+const DIST_DIR = path.join(__dirname, 'dist');
 
 const MIME_TYPES = {
   '.html': 'text/html; charset=utf-8',
@@ -60,8 +61,8 @@ const server = http.createServer((req, res) => {
   }
 
   // Sanitize path against directory traversal
-  const safePath = path.normalize(path.join(__dirname, pathname));
-  if (!safePath.startsWith(__dirname)) {
+  const safePath = path.resolve(DIST_DIR, `.${pathname}`);
+  if (!safePath.startsWith(`${DIST_DIR}${path.sep}`)) {
     res.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8' });
     res.end('403 Forbidden');
     return;

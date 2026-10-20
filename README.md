@@ -1,30 +1,35 @@
 # Website Ucapan Selamat Ulang Tahun 🎉
 
 Website interaktif untuk ucapan selamat ulang tahun dilengkapi dengan efek kembang api (confetti) dan panel admin untuk mengubah nama serta umur secara dinamis.
-Lagu `laguwae.mpeg` diputar berulang setelah kartu ucapan dibuka.
+Lagu `public/laguwae.mpeg` diputar berulang setelah kartu ucapan dibuka.
 
-## Cara Menggunakan (Node.js Localhost & Network)
+## Cara Menggunakan (Vite, Node.js Localhost & Network)
 
-### 1. Jalankan Server
-Gunakan perintah berikut untuk menjalankan server Node.js:
+### Pengembangan
+Jalankan Vite untuk halaman HTML dan API lokal:
+```bash
+npm run dev
+```
+
+Vite menampilkan alamat lokal, biasanya `http://localhost:5173/`. Halaman admin tersedia di `/admin.html`.
+
+### Build dan Jalankan Server
+Untuk membuat build HTML statis dan menjalankan server Node.js beserta API MongoDB:
 ```bash
 npm start
 ```
-atau langsung menggunakan Node.js:
-```bash
-node server.js
-```
+Perintah ini membangun file ke folder `dist/` lalu menjalankan server pada port 3000.
 
 ### 2. Akses Website
-- **Localhost:** `http://localhost:3000/`
-- **Network (HP / Perangkat lain dalam 1 Wi-Fi):** `http://<IP-KOMPUTER>:3000/` (IP otomatis ditampilkan di terminal saat server berjalan)
-- **Halaman Admin:** `http://localhost:3000/admin.html`
+- **Development:** alamat yang dicetak Vite di terminal
+- **Build/server:** `http://localhost:3000/`
+- **Halaman Admin:** `/admin.html` pada alamat server yang digunakan
 
 ## Konfigurasi Database MongoDB
 
 Pengaturan nama dan umur disimpan pada database `ultah`, collection `main`, menggunakan satu dokumen dengan `_id: "birthday"`. Untuk menjalankan secara lokal, atur `MONGODB_URI`, `ADMIN_PASSWORD`, dan `ADMIN_SESSION_SECRET` di file `.env`. Gunakan kata sandi admin yang kuat dan secret acak minimal 32 karakter. Jangan masukkan kredensial database atau kata sandi ke kode frontend atau commit file `.env`.
 
-Panel admin dan halaman ucapan membaca serta menyimpan pengaturan melalui endpoint `/api/settings`.
+Vite menyajikan halaman HTML saat pengembangan, sedangkan endpoint `/api/settings` dan `/api/session` tetap berjalan di server Node.js.
 
 ## Deploy ke Vercel
 

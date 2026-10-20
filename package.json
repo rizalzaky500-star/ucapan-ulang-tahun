@@ -4,12 +4,17 @@
   "description": "Website ucapan selamat ulang tahun interaktif dengan panel admin dan dukungan jaringan lokal",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node --watch server.js"
+    "start": "npm run build && node server.js",
+    "dev": "vite --host 0.0.0.0",
+    "build": "vite build",
+    "preview": "vite preview --host 0.0.0.0"
   },
   "dependencies": {
     "dotenv": "^16.4.7",
     "mongodb": "^6.12.0"
+  },
+  "devDependencies": {
+    "vite": "^6.4.1"
   },
   "keywords": [
     "birthday",
