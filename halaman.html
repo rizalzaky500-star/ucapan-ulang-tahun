@@ -140,6 +140,53 @@
       transform-origin: 50% 80%;
     }
 
+    .cute-pal {
+      position: relative;
+      display: flex;
+      width: fit-content;
+      align-items: center;
+      justify-content: center;
+      margin: -12px auto 22px;
+    }
+
+    .pal-bunny {
+      display: inline-block;
+      font-size: 42px;
+      filter: drop-shadow(0 5px 5px rgb(100 50 120 / 18%));
+      transform-origin: 50% 85%;
+      animation: bunny-hop 1.8s ease-in-out infinite;
+    }
+
+    .pal-speech {
+      position: absolute;
+      right: 100%;
+      top: 0;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: #fff0f8;
+      color: #c02678;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+      box-shadow: 0 3px 12px rgb(190 65 140 / 14%);
+      animation: speech-pop 2.8s ease-in-out infinite;
+    }
+
+    .pal-heart {
+      position: absolute;
+      top: 2px;
+      right: -12px;
+      font-size: 15px;
+      animation: heart-float 1.7s ease-in-out infinite;
+    }
+
+    .pal-heart-two {
+      top: -8px;
+      right: 3px;
+      font-size: 11px;
+      animation-delay: -.8s;
+    }
+
     .birthday-title {
       background: linear-gradient(100deg, #f472b6 10%, #a78bfa 45%, #f59e0b 75%, #f472b6 95%);
       background-size: 220% auto;
@@ -213,6 +260,22 @@
       50% { transform: rotate(4deg) translateY(-5px); }
     }
 
+    @keyframes bunny-hop {
+      0%, 72%, 100% { transform: translateY(0) rotate(0); }
+      82% { transform: translateY(-12px) rotate(-8deg); }
+      91% { transform: translateY(0) rotate(7deg); }
+    }
+
+    @keyframes speech-pop {
+      0%, 12%, 100% { opacity: .65; transform: scale(.92); }
+      20%, 78% { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes heart-float {
+      0%, 100% { opacity: .5; transform: translateY(2px) scale(.8) rotate(-10deg); }
+      50% { opacity: 1; transform: translateY(-7px) scale(1.12) rotate(10deg); }
+    }
+
     @keyframes title-glow {
       to { background-position: 220% center; }
     }
@@ -278,6 +341,13 @@
     <p class="text-gray-600 text-sm leading-relaxed mb-8">
       Semoga di usia yang baru ini kamu semakin sehat, panjang umur, dan semua impian serta cita-citamu dapat tercapai. Tetaplah menjadi orang yang baik dan ceria! ❤️
     </p>
+
+    <div class="cute-pal" aria-hidden="true">
+      <span class="pal-speech">Yeay! 🎈</span>
+      <span class="pal-bunny">🐰</span>
+      <span class="pal-heart">💖</span>
+      <span class="pal-heart pal-heart-two">✨</span>
+    </div>
 
     <!-- Tombol Efek Kembang Api -->
     <button onclick="launchConfetti()" class="celebrate-button w-full bg-gradient-to-r from-pink-500 via-purple-600 to-indigo-600 text-white font-bold py-3 px-6 rounded-xl active:scale-95">
