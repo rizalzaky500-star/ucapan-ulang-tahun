@@ -1,0 +1,18 @@
+{
+  "name": "ucapan-ulang-tahun",
+  "version": "1.0.0",
+  "description": "Website ucapan selamat ulang tahun interaktif dengan panel admin dan dukungan jaringan lokal",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": [
+    "birthday",
+    "tailwindcss",
+    "nodejs",
+    "confetti"
+  ],
+  "author": "",
+  "license": "ISC"
+}
