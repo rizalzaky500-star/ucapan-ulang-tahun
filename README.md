@@ -27,4 +27,3 @@ Hubungkan repository ini ke Vercel dan deploy ulang setelah perubahan konfiguras
 - **Halaman admin:** `/admin.html` atau `/admin`
 
 Pengaturan admin disimpan di `localStorage`, jadi perubahan hanya berlaku di browser dan domain yang sama.
-Saat pertama membuka halaman admin, buat password minimal 6 karakter. Password admin juga hanya berlaku di browser dan domain tersebut; ini gerbang sederhana di sisi klien, bukan autentikasi server-side.
