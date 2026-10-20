@@ -1,27 +1,5 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "halaman.html",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "admin.html",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "laguwae.mpeg",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "api/settings.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "api/session.js",
-      "use": "@vercel/node"
-    }
-  ],
   "rewrites": [
     {
       "source": "/",

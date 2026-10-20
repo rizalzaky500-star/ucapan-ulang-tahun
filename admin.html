@@ -77,10 +77,18 @@
       );
     }
 
+    async function readApiResponse(response) {
+      const contentType = response.headers.get('content-type') || '';
+      if (!contentType.includes('application/json')) {
+        throw new Error(`API mengembalikan respons non-JSON (HTTP ${response.status}). Periksa konfigurasi dan deploy function Vercel.`);
+      }
+      return response.json();
+    }
+
     async function loadSettings() {
       try {
         const sessionResponse = await fetch('/api/session');
-        const session = await sessionResponse.json();
+        const session = await readApiResponse(sessionResponse);
         if (!sessionResponse.ok) {
           throw new Error(session.error || 'Status admin tidak dapat diperiksa.');
         }
@@ -95,7 +103,7 @@
         adminForm.classList.remove('hidden');
         logoutButton.classList.remove('hidden');
         const response = await fetch('/api/settings');
-        const settings = await response.json();
+        const settings = await readApiResponse(response);
         if (!response.ok) {
           throw new Error(settings.error || 'Pengaturan tidak dapat dimuat.');
         }
@@ -118,7 +126,7 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ password: adminPassword.value }),
         });
-        const result = await response.json();
+        const result = await readApiResponse(response);
         if (!response.ok) {
           throw new Error(result.error || 'Tidak dapat masuk sebagai admin.');
         }
@@ -132,7 +140,7 @@
     logoutButton.addEventListener('click', async () => {
       try {
         const response = await fetch('/api/session', { method: 'DELETE' });
-        const result = await response.json();
+        const result = await readApiResponse(response);
         if (!response.ok) {
           throw new Error(result.error || 'Tidak dapat keluar dari admin.');
         }
@@ -162,7 +170,7 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name, age }),
         });
-        const result = await response.json();
+        const result = await readApiResponse(response);
         if (!response.ok) {
           throw new Error(result.error || 'Pengaturan tidak dapat disimpan.');
         }
