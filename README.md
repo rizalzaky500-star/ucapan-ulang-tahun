@@ -18,3 +18,11 @@ node server.js
 - **Localhost:** `http://localhost:3000/`
 - **Network (HP / Perangkat lain dalam 1 Wi-Fi):** `http://<IP-KOMPUTER>:3000/` (IP otomatis ditampilkan di terminal saat server berjalan)
 - **Halaman Admin:** `http://localhost:3000/admin.html`
+
+## Deploy ke Vercel
+
+Hubungkan repository ini ke Vercel dan deploy ulang setelah perubahan konfigurasi di-commit. Halaman ucapan dan admin dipublikasikan sebagai file statis:
+- **Halaman utama:** `/` atau `/halaman.html`
+- **Halaman admin:** `/admin.html` atau `/admin`
+
+Pengaturan admin disimpan di `localStorage`, jadi perubahan hanya berlaku di browser dan domain yang sama.
