@@ -379,6 +379,16 @@
       transition: transform 180ms ease, box-shadow 180ms ease;
     }
 
+    .music-button {
+      min-height: 44px;
+      color: #9d174d;
+      transition: background-color 180ms ease;
+    }
+
+    .music-button:hover {
+      background-color: #fce7f3;
+    }
+
     .celebrate-button::before {
       position: absolute;
       z-index: -1;
@@ -661,8 +671,15 @@
       Rayakan hari spesialmu 💞
     </button>
 
+    <button id="musicButton" type="button" class="music-button mt-3 w-full rounded-xl px-4 py-2 text-sm font-semibold" aria-pressed="false">
+      ▶ Putar lagu
+    </button>
+    <p id="musicStatus" class="mt-1 text-xs text-gray-500" role="status" aria-live="polite"></p>
+
     <p class="love-signoff text-sm mt-5">Semoga hari ini sehangat cintaku untukmu 🌹</p>
   </main>
+
+  <audio id="birthdaySong" src="/laguwae.mpeg" loop preload="none"></audio>
 
   <script>
     // Membaca data dari localStorage atau menggunakan nilai default
@@ -727,10 +744,40 @@
     const openCardButton = document.getElementById('openCardButton');
     const birthdayCard = document.getElementById('birthdayCard');
     const displayName = document.getElementById('displayName');
+    const birthdaySong = document.getElementById('birthdaySong');
+    const musicButton = document.getElementById('musicButton');
+    const musicStatus = document.getElementById('musicStatus');
+
+    function playBirthdaySong() {
+      const playback = birthdaySong.play();
+      if (playback) {
+        playback.then(() => {
+          musicButton.textContent = '⏸ Jeda lagu';
+          musicButton.setAttribute('aria-pressed', 'true');
+          musicStatus.textContent = 'Lagu diputar berulang 🎶';
+        }).catch(() => {
+          musicButton.textContent = '▶ Putar lagu';
+          musicButton.setAttribute('aria-pressed', 'false');
+          musicStatus.textContent = 'Lagu belum bisa diputar. Tekan tombol putar untuk mencoba lagi.';
+        });
+      }
+    }
+
+    musicButton.addEventListener('click', () => {
+      if (birthdaySong.paused) {
+        playBirthdaySong();
+      } else {
+        birthdaySong.pause();
+        musicButton.textContent = '▶ Putar lagu';
+        musicButton.setAttribute('aria-pressed', 'false');
+        musicStatus.textContent = 'Lagu dijeda.';
+      }
+    });
 
     openCardButton.addEventListener('click', () => {
       openCardButton.disabled = true;
       cardGate.classList.add('is-opening');
+      playBirthdaySong();
 
       setTimeout(() => {
         cardGate.hidden = true;

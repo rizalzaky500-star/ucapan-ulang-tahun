@@ -1,6 +1,7 @@
 # Website Ucapan Selamat Ulang Tahun 🎉
 
 Website interaktif untuk ucapan selamat ulang tahun dilengkapi dengan efek kembang api (confetti) dan panel admin untuk mengubah nama serta umur secara dinamis.
+Lagu `laguwae.mpeg` diputar berulang setelah kartu ucapan dibuka.
 
 ## Cara Menggunakan (Node.js Localhost & Network)
 

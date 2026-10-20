@@ -8,6 +8,10 @@
     {
       "src": "admin.html",
       "use": "@vercel/static"
+    },
+    {
+      "src": "laguwae.mpeg",
+      "use": "@vercel/static"
     }
   ],
   "rewrites": [
