@@ -170,6 +170,108 @@
         card-float 6s ease-in-out 900ms infinite;
     }
 
+    [hidden] {
+      display: none !important;
+    }
+
+    .card-gate {
+      position: relative;
+      width: min(100%, 25rem);
+      padding: 2rem;
+      border: 1px solid rgb(255 255 255 / 70%);
+      border-radius: 2rem;
+      background: rgb(255 255 255 / 92%);
+      box-shadow: 0 30px 100px rgb(5 4 30 / 48%), 0 0 55px rgb(227 109 255 / 24%);
+      text-align: center;
+      animation: card-arrive 900ms cubic-bezier(.16, 1, .3, 1) both;
+    }
+
+    .envelope {
+      position: relative;
+      width: min(100%, 17rem);
+      height: 10.5rem;
+      margin: 1.75rem auto 1.5rem;
+      border: 1px solid rgb(190 24 93 / 18%);
+      border-radius: .75rem;
+      background: linear-gradient(145deg, #fda4af, #fb7185);
+      box-shadow: 0 12px 28px rgb(190 24 93 / 20%);
+      perspective: 700px;
+    }
+
+    .envelope::before,
+    .envelope::after {
+      position: absolute;
+      z-index: 1;
+      inset: 0;
+      border-radius: inherit;
+      content: "";
+      pointer-events: none;
+    }
+
+    .envelope::before {
+      background: linear-gradient(145deg, transparent 49.5%, #fecdd3 50%) left / 50% 100% no-repeat,
+        linear-gradient(215deg, transparent 49.5%, #fda4af 50%) right / 50% 100% no-repeat;
+    }
+
+    .envelope::after {
+      background: linear-gradient(35deg, transparent 49.5%, #ffe4e6 50%) left bottom / 50% 100% no-repeat,
+        linear-gradient(325deg, transparent 49.5%, #fff1f2 50%) right bottom / 50% 100% no-repeat;
+    }
+
+    .envelope-letter {
+      position: absolute;
+      z-index: 0;
+      right: 9%;
+      bottom: 12%;
+      left: 9%;
+      display: grid;
+      height: 75%;
+      place-items: center;
+      border-radius: .5rem;
+      background: #fffafc;
+      color: #be185d;
+      font-size: 2.8rem;
+      box-shadow: 0 2px 8px rgb(136 19 55 / 12%);
+      transition: transform 650ms cubic-bezier(.2, .8, .2, 1);
+    }
+
+    .envelope-flap {
+      position: absolute;
+      z-index: 2;
+      inset: 0 0 auto;
+      height: 60%;
+      border-radius: .65rem .65rem 0 0;
+      background: #fb7185;
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      transform-origin: top center;
+      transition: transform 550ms ease, z-index 0ms 275ms;
+    }
+
+    .card-gate.is-opening .envelope-flap {
+      z-index: 0;
+      transform: rotateX(180deg);
+    }
+
+    .card-gate.is-opening .envelope-letter {
+      transform: translateY(-45%);
+    }
+
+    .gate-title {
+      color: #831843;
+      font-family: Georgia, "Times New Roman", serif;
+    }
+
+    .open-card-button {
+      min-height: 48px;
+      box-shadow: 0 8px 28px rgb(190 65 202 / 30%);
+      transition: transform 180ms ease, box-shadow 180ms ease;
+    }
+
+    .open-card-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 34px rgb(190 65 202 / 45%);
+    }
+
     .birthday-card::before {
       position: absolute;
       z-index: -1;
@@ -293,6 +395,7 @@
     }
 
     .celebrate-button:focus-visible,
+    .open-card-button:focus-visible,
     .admin-link:focus-visible {
       outline: 3px solid #fbbf24;
       outline-offset: 4px;
@@ -504,15 +607,26 @@
   </div>
 
   <!-- Card Ucapan Ulang Tahun -->
-  <main class="birthday-card bg-white/90 backdrop-blur-md p-8 md:p-12 rounded-3xl text-center max-w-lg w-full relative overflow-hidden">
-    
-    <!-- Tombol ke Halaman Admin (Ikon Gear) -->
+  <section id="cardGate" class="card-gate" aria-labelledby="gateTitle">
     <a href="admin.html" title="Pengaturan Admin" aria-label="Pengaturan Admin" class="admin-link absolute top-4 right-4 text-gray-500 hover:text-purple-600 transition">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
       </svg>
     </a>
+    <p class="text-sm font-semibold text-pink-700 uppercase tracking-widest">Ada pesan spesial untukmu</p>
+    <div class="envelope" aria-hidden="true">
+      <span class="envelope-letter">💌</span>
+      <span class="envelope-flap"></span>
+    </div>
+    <h1 id="gateTitle" class="gate-title text-2xl font-bold mb-2">Sebuah ucapan penuh cinta</h1>
+    <p class="text-sm text-gray-600 mb-6">Ketuk tombolnya untuk membuka kejutan kecil dariku ✨</p>
+    <button id="openCardButton" type="button" class="open-card-button w-full bg-gradient-to-r from-rose-500 via-pink-600 to-fuchsia-700 text-white font-bold py-3 px-6 rounded-xl" aria-controls="birthdayCard" aria-expanded="false">
+      Buka Kartu Ucapan 💌
+    </button>
+  </section>
+
+  <main id="birthdayCard" class="birthday-card bg-white/90 backdrop-blur-md p-8 md:p-12 rounded-3xl text-center max-w-lg w-full relative overflow-hidden" hidden>
 
     <!-- Ilustrasi / Emoji -->
     <div class="cake-icon text-6xl mb-4" aria-hidden="true">💐🕯️💖</div>
@@ -608,8 +722,25 @@
 
     // Jalankan saat pertama dimuat
     loadData();
-    // Otomatis menembakkan confetti di awal
-    setTimeout(launchConfetti, 500);
+
+    const cardGate = document.getElementById('cardGate');
+    const openCardButton = document.getElementById('openCardButton');
+    const birthdayCard = document.getElementById('birthdayCard');
+    const displayName = document.getElementById('displayName');
+
+    openCardButton.addEventListener('click', () => {
+      openCardButton.disabled = true;
+      cardGate.classList.add('is-opening');
+
+      setTimeout(() => {
+        cardGate.hidden = true;
+        birthdayCard.hidden = false;
+        openCardButton.setAttribute('aria-expanded', 'true');
+        displayName.setAttribute('tabindex', '-1');
+        displayName.focus({ preventScroll: true });
+        launchConfetti();
+      }, window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 550);
+    });
   </script>
 </body>
 </html>
