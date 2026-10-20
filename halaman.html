@@ -101,6 +101,55 @@
       background: rgb(255 255 255 / 42%);
     }
 
+    .bottom-balloon-garden {
+      position: fixed;
+      z-index: -1;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      height: 190px;
+      overflow: hidden;
+      pointer-events: none;
+      background: linear-gradient(to top, rgb(20 13 54 / 30%), transparent 75%);
+    }
+
+    .garden-balloon {
+      position: absolute;
+      bottom: var(--bottom);
+      left: var(--left);
+      width: var(--width);
+      height: calc(var(--width) * 1.28);
+      border: 1px solid rgb(255 255 255 / 40%);
+      border-radius: 50% 50% 46% 46%;
+      background: radial-gradient(ellipse at 30% 24%, rgb(255 255 255 / 85%), transparent 15%), radial-gradient(ellipse at 35% 30%, rgb(255 255 255 / 30%), transparent 55%), var(--color);
+      box-shadow: inset -7px -8px 0 rgb(35 20 72 / 13%), 0 0 18px color-mix(in srgb, var(--color), transparent 48%);
+      transform-origin: 50% 100%;
+      animation: garden-balloon-bob var(--duration) ease-in-out var(--delay) infinite;
+    }
+
+    .garden-balloon::before {
+      position: absolute;
+      bottom: -5px;
+      left: calc(50% - 5px);
+      width: 10px;
+      height: 9px;
+      content: "";
+      background: var(--color);
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+    }
+
+    .garden-balloon::after {
+      position: absolute;
+      top: calc(100% + 5px);
+      left: 50%;
+      width: 1px;
+      height: var(--string);
+      content: "";
+      background: linear-gradient(rgb(255 255 255 / 65%), transparent);
+      transform: rotate(var(--string-angle));
+      transform-origin: top;
+    }
+
     .birthday-card {
       isolation: isolate;
       border: 1px solid rgb(255 255 255 / 72%);
@@ -240,6 +289,11 @@
       100% { transform: translate3d(-18px, -120vh, 0) rotate(-7deg); }
     }
 
+    @keyframes garden-balloon-bob {
+      0%, 100% { transform: translateY(0) rotate(-4deg); }
+      50% { transform: translateY(-9px) rotate(4deg); }
+    }
+
     @keyframes card-arrive {
       from { opacity: 0; transform: translateY(42px) scale(.92) rotateX(8deg); }
       to { opacity: 1; transform: translateY(0) scale(1) rotateX(0); }
@@ -311,6 +365,21 @@
   <div class="party-balloon" style="--x: 7%; --color: #fb7185; --speed: 19s; --delay: -11s" aria-hidden="true"></div>
   <div class="party-balloon" style="--x: 83%; --color: #facc15; --speed: 22s; --delay: -16s" aria-hidden="true"></div>
   <div class="party-balloon" style="--x: 93%; --color: #67e8f9; --speed: 18s; --delay: -6s" aria-hidden="true"></div>
+  <div class="bottom-balloon-garden" aria-hidden="true">
+    <span class="garden-balloon" style="--left: 2%; --bottom: -12px; --width: 38px; --color: #fb7185; --duration: 3.6s; --delay: -.5s; --string: 54px; --string-angle: -5deg"></span>
+    <span class="garden-balloon" style="--left: 8%; --bottom: 4px; --width: 50px; --color: #f9a8d4; --duration: 4.1s; --delay: -2s; --string: 70px; --string-angle: 6deg"></span>
+    <span class="garden-balloon" style="--left: 15%; --bottom: -22px; --width: 42px; --color: #facc15; --duration: 3.8s; --delay: -1.3s; --string: 58px; --string-angle: -8deg"></span>
+    <span class="garden-balloon" style="--left: 23%; --bottom: -8px; --width: 36px; --color: #67e8f9; --duration: 4.4s; --delay: -2.8s; --string: 48px; --string-angle: 5deg"></span>
+    <span class="garden-balloon" style="--left: 31%; --bottom: -26px; --width: 46px; --color: #a78bfa; --duration: 3.9s; --delay: -.9s; --string: 62px; --string-angle: -4deg"></span>
+    <span class="garden-balloon" style="--left: 40%; --bottom: -14px; --width: 34px; --color: #86efac; --duration: 4.3s; --delay: -1.8s; --string: 48px; --string-angle: 7deg"></span>
+    <span class="garden-balloon" style="--left: 49%; --bottom: -24px; --width: 42px; --color: #fda4af; --duration: 3.7s; --delay: -2.4s; --string: 58px; --string-angle: -6deg"></span>
+    <span class="garden-balloon" style="--left: 58%; --bottom: -6px; --width: 36px; --color: #fde68a; --duration: 4.2s; --delay: -.7s; --string: 48px; --string-angle: 5deg"></span>
+    <span class="garden-balloon" style="--left: 67%; --bottom: -20px; --width: 48px; --color: #c4b5fd; --duration: 3.8s; --delay: -1.6s; --string: 64px; --string-angle: -5deg"></span>
+    <span class="garden-balloon" style="--left: 76%; --bottom: -8px; --width: 38px; --color: #f9a8d4; --duration: 4.5s; --delay: -3s; --string: 52px; --string-angle: 6deg"></span>
+    <span class="garden-balloon" style="--left: 84%; --bottom: -24px; --width: 44px; --color: #67e8f9; --duration: 3.7s; --delay: -1.1s; --string: 60px; --string-angle: -6deg"></span>
+    <span class="garden-balloon" style="--left: 92%; --bottom: 0; --width: 52px; --color: #facc15; --duration: 4.2s; --delay: -2.1s; --string: 72px; --string-angle: 5deg"></span>
+    <span class="garden-balloon" style="--left: 98%; --bottom: -16px; --width: 38px; --color: #fb7185; --duration: 3.9s; --delay: -.8s; --string: 54px; --string-angle: -5deg"></span>
+  </div>
 
   <!-- Card Ucapan Ulang Tahun -->
   <main class="birthday-card bg-white/90 backdrop-blur-md p-8 md:p-12 rounded-3xl text-center max-w-lg w-full relative overflow-hidden">
