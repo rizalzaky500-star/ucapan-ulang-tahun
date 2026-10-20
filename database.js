@@ -13,7 +13,7 @@ function getCollection() {
   }
 
   if (!clientPromise) {
-    const client = new MongoClient(uri);
+    const client = new MongoClient(uri, { tls: true });
     clientPromise = client.connect().catch((error) => {
       clientPromise = undefined;
       throw error;
